@@ -1,0 +1,103 @@
+<!DOCTYPE htmldata>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library Management System</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootstrap JS & jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+
+    <link rel="stylesheet" href="/css/app.css">
+    <script src="/js/modal.js"></script>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1>Library Management System</h1>
+    
+        <!-- Table -->
+        <table class="table table-striped table-bordered mt-4">
+            <thead>
+                <tr>
+                    <th>Book Name</th>
+                    <th>Book Author</th>
+                    <th>Book Pages</th>
+                    <th>Book Price</th>
+                    <th>Book Availability</th>
+                    <th>Issue</th>
+                    <th>Return</th>
+                    <th>Update</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% data.forEach(element => { %>
+                    <tr>
+                        <td><%= element.bookName %></td>
+                        <td><%= element.bookAuthor %></td>
+                        <td><%= element.bookPages %></td>
+                        <td><%= element.bookPrice %></td>
+                        <td><%= element.bookState %></td>
+                        <td><a href="/issue/<%= element.bookID %>" class="btn btn-primary btn-sm">Issue</a></td>
+                        <td><a href="/return/<%= element.bookID %>" class="btn btn-secondary btn-sm">Return</a></td>
+                        <td><button class="btn btn-warning btn-sm" onclick="openModal(<%= element.bookID %>, '<%= element.bookName %>', '<%= element.bookAuthor %>', <%= element.bookPages %>, <%= element.bookPrice %>)">Update</button></td>
+                        <td><a href="/delete/<%= element.bookID %>" class="btn btn-danger btn-sm">Delete</a></td>
+                    </tr>
+                <% }); %>
+            </tbody>
+        </table>
+
+        <!-- Modal -->
+        <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="updateModalLabel">Update Book Details</h5>
+                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="updateForm" action="" method="POST">
+                            <input type="hidden" id="bookID" name="bookID">
+
+                            <div class="mb-3">
+                                <label for="bookName" class="form-label">Book Name:</label>
+                                <input type="text" id="bookName" name="bookName" class="form-control">
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="bookAuthor" class="form-label">Author:</label>
+                                <input type="text" id="bookAuthor" name="bookAuthor" class="form-control">
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="bookPages" class="form-label">Pages:</label>
+                                <input type="number" id="bookPages" name="bookPages" class="form-control">
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="bookPrice" class="form-label">Price:</label>
+                                <input type="number" id="bookPrice" name="bookPrice" class="form-control">
+                            </div>
+
+                            <button type="submit" class="btn btn-success">Update</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h2>Add Book</h2>
+    <form action="/" method="post">
+        <input type="text" name="bookName" placeholder="Book Name">
+        <input type="text" name="bookAuthor" placeholder="Book Author">
+        <input type="text" name="bookPages" placeholder="Book Pages">
+        <input type="text" name="bookPrice" placeholder="Book Price">
+        <button type="submit">Add Book</button>
+    </form> 
+</body>
+</html>
