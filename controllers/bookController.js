@@ -1,82 +1,122 @@
-const Book = require('../models/Book');
+import Book from '../models/Book.js';
+
+// Helper function to handle errors
+const handleError = (res, error, message) => {
+    console.error(error);
+    res.status(500).send(message);
+};
 
 // Get all books
-exports.getAllBooks = async (req, res) => {
-	try {
-		const books = await Book.find();
-		res.render('book', { data: books });
-	} catch (err) {
-		console.error(err);
-		res.status(500).send('Error fetching books');
-	}
+export const getAllBooks = async (req, res) => {
+    console.log('getAllBooks');
+    try {
+        const books = await Book.find();
+        console.log(books);
+        res.render('admin/book', { data: books });
+    } catch (error) {
+        handleError(res, error, 'Error fetching books');
+    }
 };
 
 // Add a new book
-exports.addBook = async (req, res) => {
-	try {
-		const book = new Book({
-			bookID: (await Book.countDocuments()) + 1,
-			bookName: req.body.bookName,
-			bookAuthor: req.body.bookAuthor,
-			bookPages: req.body.bookPages,
-			bookPrice: req.body.bookPrice
-		});
-		await book.save();
-		res.redirect('/book');
-	} catch (err) {
-		console.error(err);
-		res.status(500).send('Error adding book');
-	}
+export const addBook = async (req, res) => {
+    const { bookName, bookAuthor, bookPages, bookPrice } = req.body;
+
+    // Validate input
+    if (!bookName || !bookAuthor || !bookPages || !bookPrice) {
+        return res.status(400).send('All fields are required');
+    }
+
+    try {
+        const book = new Book({
+            bookID: (await Book.countDocuments()) + 1,
+            bookName,
+            bookAuthor,
+            bookPages,
+            bookPrice
+        });
+        await book.save();
+        res.redirect('/admin/book');
+    } catch (err) {
+        handleError(res, err, 'Error adding book');
+    }
 };
 
 // Issue a book
-exports.issueBook = async (req, res) => {
-	try {
-		await Book.updateOne({ bookID: req.params.bookID }, { bookState: 'Issued' });
-		res.redirect('/book');
-	} catch (err) {
-		console.error(err);
-		res.status(500).send('Error issuing book');
-	}
+export const issueBook = async (req, res) => {
+    try {
+        const updatedBook = await Book.findOneAndUpdate(
+            { bookID: req.params.bookID },
+            { bookState: 'Issued' },
+            { new: true }
+        );
+
+        if (!updatedBook) {
+            return res.status(404).send('Book not found');
+        }
+
+        res.redirect('/admin/book');
+    } catch (err) {
+        handleError(res, err, 'Error issuing book');
+    }
 };
 
 // Return a book
-exports.returnBook = async (req, res) => {
-	try {
-		await Book.updateOne({ bookID: req.params.bookID }, { bookState: 'Available' });
-		res.redirect('/book');
-	} catch (err) {
-		console.error(err);
-		res.status(500).send('Error returning book');
-	}
+export const returnBook = async (req, res) => {
+    try {
+        const updatedBook = await Book.findOneAndUpdate(
+            { bookID: req.params.bookID },
+            { bookState: 'Available' },
+            { new: true }
+        );
+
+        if (!updatedBook) {
+            return res.status(404).send('Book not found');
+        }
+
+        res.redirect('/admin/book');
+    } catch (err) {
+        handleError(res, err, 'Error returning book');
+    }
 };
 
 // Delete a book
-exports.deleteBook = async (req, res) => {
-	try {
-		await Book.deleteOne({ bookID: req.params.bookID });
-		res.redirect('/book');
-	} catch (err) {
-		console.error(err);
-		res.status(500).send('Error deleting book');
-	}
+export const deleteBook = async (req, res) => {
+    try {
+        const deletedBook = await Book.findOneAndDelete({ bookID: req.params.bookID });
+
+        if (!deletedBook) {
+            return res.status(404).send('Book not found');
+        }
+
+        res.redirect('/admin/book');
+    } catch (err) {
+        handleError(res, err, 'Error deleting book');
+    }
 };
 
 // Update a book
-exports.updateBook = async (req, res) => {
-	try {
-		const { bookName, bookAuthor, bookPages, bookPrice } = req.body;
-		const updatedBook = await Book.findOneAndUpdate(
-			{ bookID: req.params.bookID },
-			{ bookName, bookAuthor, bookPages, bookPrice },
-			{ new: true }
-		);
-		if (!updatedBook) {
-			return res.status(404).send('Book not found');
-		}
-		res.redirect('/book');
-	} catch (err) {
-		console.error(err);
-		res.status(500).send('Error updating book');
-	}
+export const updateBook = async (req, res) => {
+    const { bookName, bookAuthor, bookPages, bookPrice } = req.body;
+
+    // Validate input
+    if (!bookName || !bookAuthor || !bookPages || !bookPrice) {
+        return res.status(400).send('All fields are required');
+    }
+
+    try {
+        const updatedBook = await Book.findOneAndUpdate(
+            { bookID: req.params.bookID },
+            { bookName, bookAuthor, bookPages, bookPrice },
+            { new: true }
+        );
+
+        if (!updatedBook) {
+            return res.status(404).send('Book not found');
+        }
+
+        res.redirect('/admin/book');
+    } catch (err) {
+        handleError(res, err, 'Error updating book');
+    }
 };

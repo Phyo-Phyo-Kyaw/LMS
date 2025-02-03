@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const bookSchema = new mongoose.Schema({
 	bookID: Number,
@@ -9,4 +9,5 @@ const bookSchema = new mongoose.Schema({
 	bookState: { type: String, default: 'Available' }
 });
 
-module.exports = mongoose.model('Book', bookSchema);
+const Book = mongoose.model('Book', bookSchema);
+export default Book;

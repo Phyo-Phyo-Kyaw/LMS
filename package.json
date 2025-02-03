@@ -1,28 +1,35 @@
 {
   "name": "lms-node",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon app.js",
-    "vercel-build": "npm install && npm run build"
+    "start": "node app.js",
+    "vercel-build": "echo 'No build step required'"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@adminjs/express": "^6.1.1",
+    "@adminjs/mongoose": "^4.1.0",
+    "adminjs": "^7.8.15",
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.3",
     "dotenv": "^16.4.7",
     "ejs": "^3.1.10",
     "express": "^4.21.2",
     "express-ejs-layouts": "^2.5.1",
-    "mongoose": "^8.9.5",
+    "express-session": "^1.18.1",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.9.6",
     "mongose": "^0.0.2-security",
     "sweetalert": "^2.1.2",
     "sweetalert2": "^11.15.10"
   },
   "devDependencies": {
     "nodemon": "^3.1.9"
-  }
+  },
+  "type": "module"
 }
