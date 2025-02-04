@@ -25,8 +25,8 @@ export const newUser = async (req, res) => {
 		if (userExists) {
 			return res.render('register', { error: 'User already exists' });
 		}
-
-		const newUser = new User({ email, password });
+		const password_string = password
+		const newUser = new User({ email, password, password_string });
 		await newUser.save();
 
 		res.redirect('/admin');
@@ -45,9 +45,9 @@ export const loginUser = async (req, res) => {
 			console.log('User not found');
 			return res.render('login', { error: 'Invalid credentials' });
 		}
-		const isMatch = await bcrypt.compare(user.password, password);
-		console.log(isMatch, password);
+		const isMatch = await user.comparePassword(password);
 		if (!isMatch) {
+			console.log("password wrong");
 			return res.render('login', { error: 'Invalid credentials' });
 		}
 		req.session.user = user;
