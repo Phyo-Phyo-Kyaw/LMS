@@ -29,6 +29,7 @@ app.locals.path = path;
 // Middleware
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(process.cwd(), 'public')));
+app.use(express.static('public'));
 
 // In app.js or your main server file
 app.use(session({

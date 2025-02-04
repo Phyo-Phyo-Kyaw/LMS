@@ -1,6 +1,7 @@
 // routes/adminRoutes.js
 import express from 'express';
 import { getAllBooks, addBook, issueBook, returnBook, deleteBook, updateBook } from '../controllers/bookController.js';
+import { getAllUsers } from '../controllers/userController.js';
 const router = express.Router();
 
 // Middleware to check if the user is logged in
@@ -16,13 +17,7 @@ router.use(isAuthenticated);
 
 // Admin Dashboard Route
 router.get('/', (req, res) => {
-	// Render the admin dashboard view
 	res.render('admin/dashboard', { title: 'Admin Dashboard' });
-});
-
-// Other admin routes, e.g., for user management
-router.get('/books', (req, res) => {
-	res.render('admin/book', { title: 'Manage Users' });
 });
 
 // Admin Logout Route
@@ -32,6 +27,7 @@ router.get('/logout', (req, res) => {
 	});
 });
 
+// Get all books
 router.get('/books', getAllBooks);
 
 // Add a book
@@ -48,5 +44,8 @@ router.get('/book/delete/:bookID', deleteBook);
 
 // Update a book
 router.post('/book/update/:bookID', updateBook);
+
+// get all users
+router.get('/users', getAllUsers);
 
 export default router;

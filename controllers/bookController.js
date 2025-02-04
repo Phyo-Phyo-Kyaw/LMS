@@ -8,11 +8,9 @@ const handleError = (res, error, message) => {
 
 // Get all books
 export const getAllBooks = async (req, res) => {
-    console.log('getAllBooks');
     try {
         const books = await Book.find();
-        console.log(books);
-        res.render('admin/book', { data: books });
+        res.render('admin/book', { data: books,  title: 'Books'  });
     } catch (error) {
         handleError(res, error, 'Error fetching books');
     }
@@ -36,7 +34,7 @@ export const addBook = async (req, res) => {
             bookPrice
         });
         await book.save();
-        res.redirect('/admin/book');
+        res.redirect('/admin/books');
     } catch (err) {
         handleError(res, err, 'Error adding book');
     }
@@ -55,7 +53,7 @@ export const issueBook = async (req, res) => {
             return res.status(404).send('Book not found');
         }
 
-        res.redirect('/admin/book');
+        res.redirect('/admin/books');
     } catch (err) {
         handleError(res, err, 'Error issuing book');
     }
@@ -74,7 +72,7 @@ export const returnBook = async (req, res) => {
             return res.status(404).send('Book not found');
         }
 
-        res.redirect('/admin/book');
+        res.redirect('/admin/books');
     } catch (err) {
         handleError(res, err, 'Error returning book');
     }
@@ -89,7 +87,7 @@ export const deleteBook = async (req, res) => {
             return res.status(404).send('Book not found');
         }
 
-        res.redirect('/admin/book');
+        res.redirect('/admin/books');
     } catch (err) {
         handleError(res, err, 'Error deleting book');
     }
@@ -115,7 +113,7 @@ export const updateBook = async (req, res) => {
             return res.status(404).send('Book not found');
         }
 
-        res.redirect('/admin/book');
+        res.redirect('/admin/books');
     } catch (err) {
         handleError(res, err, 'Error updating book');
     }

@@ -1,7 +1,7 @@
 function openModal(bookID, bookName, bookAuthor, bookPages, bookPrice) {
 	const form = $('#updateForm');
 	// Set form action
-	form.attr('action', `/book/update/${bookID}`);
+	form.attr('action', `/admin/book/update/${bookID}`);
 		
 	// Populate form fields
 	$('#bookID').val(bookID);
@@ -39,7 +39,7 @@ $('#deleteBookModal').on('show.bs.modal', function(event) {
 		
 	const modal = $(this);
 	modal.find('#bookTitle').text(bookName);
-	modal.find('#deleteForm').attr('action', `/book/delete/${bookID}`);
+	modal.find('#deleteForm').attr('action', `/admin/book/delete/${bookID}`);
 });
 
 // AJAX Delete Handling (jQuery version)
